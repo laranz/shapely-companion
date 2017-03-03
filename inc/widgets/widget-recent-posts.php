@@ -9,7 +9,7 @@ class shapely_recent_posts extends WP_Widget {
 	function __construct() {
 
 		$widget_ops = array(
-			'classname'                   => 'shapely-recent-posts col-sm-12 text-center',
+			'classname'                   => 'shapely-recent-posts',
 			'description'                 => esc_html__( "Widget to show recent posts with thumbnails", 'shapely' ),
 			'customize_selective_refresh' => true
 		);
@@ -24,58 +24,70 @@ class shapely_recent_posts extends WP_Widget {
 		echo $before_widget;
 		?>
 		<section>
-			<?php
-			echo $before_title;
-			echo $title;
-			echo $after_title;
 
-			/**
-			 * Widget Content
-			 */
-			?>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<h3 class="mb64 mb-xs-40">
+						<?php
+						echo $before_title;
+						echo $title;
+						echo $after_title;
 
-			<!-- recent posts -->
-			<div class="recent-posts-wrapper nolist">
+							/**
+							 * Widget Content
+							 */
+							?>
+						</h3>
+					</div>
+				</div>
 
-				<?php
-				$featured_args = array(
-					'posts_per_page'      => $limit,
-					'post_type'           => 'post',
-					'ignore_sticky_posts' => 1
-				);
 
-				$featured_query    = new WP_Query( $featured_args );
-				$bootstrapColWidth = floor( 12 / $featured_query->post_count );
-				if ( $featured_query->have_posts() ) : ?>
+				<div class="row">
+					<!-- recent posts -->
+					<div class="recent-posts-wrapper nolist">
 
-					<ul class="link-list recent-posts"><?php
+						<?php
+						$featured_args = array(
+							'posts_per_page'      => $limit,
+							'post_type'           => 'post',
+							'ignore_sticky_posts' => 1
+						);
 
-					while ( $featured_query->have_posts() ) : $featured_query->the_post(); ?>
+						$featured_query    = new WP_Query( $featured_args );
+						$bootstrapColWidth = floor( 12 / $featured_query->post_count );
+						if ( $featured_query->have_posts() ) : ?>
 
-						<?php if ( get_the_content() != '' ) : ?>
+							<ul class="link-list recent-posts"><?php
 
-							<!-- content -->
-							<li class="post-content col-sm-<?php echo esc_attr( $bootstrapColWidth ); ?>">
-								<a href="<?php echo esc_url( get_permalink() ); ?>">
-									<?php if ( has_post_thumbnail() ) {
-										the_post_thumbnail();
-									} ?>
-									<?php echo esc_html( get_the_title() ); ?>
-								</a>
-								<span class="date"><?php echo esc_html( get_the_date( 'd M , Y' ) ); ?></span>
-							</li>
-							<!-- end content -->
+							while ( $featured_query->have_posts() ) : $featured_query->the_post(); ?>
 
-						<?php endif; ?>
+								<?php if ( get_the_content() != '' ) : ?>
 
-					<?php endwhile; ?>
-					</ul><?php
+									<!-- content -->
+									<li class="post-content col-sm-<?php echo esc_attr( $bootstrapColWidth ); ?>">
+										<a href="<?php echo esc_url( get_permalink() ); ?>">
+											<?php if ( has_post_thumbnail() ) {
+												the_post_thumbnail();
+											} ?>
+											<?php echo esc_html( get_the_title() ); ?>
+										</a>
+										<span class="date"><?php echo esc_html( get_the_date( 'd M , Y' ) ); ?></span>
+									</li>
+									<!-- end content -->
 
-				endif;
-				wp_reset_query();
-				?>
+								<?php endif; ?>
 
-			</div> <!-- end posts wrapper -->
+							<?php endwhile; ?>
+							</ul><?php
+
+						endif;
+						wp_reset_query();
+						?>
+
+					</div> <!-- end posts wrapper -->
+				</div>
+			</div>
 		</section>
 		<?php
 		echo $after_widget;
